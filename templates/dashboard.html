@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard - Sagar Motors
+{% endblock %}
+
+
+{% block content %}
+
+<div class="text-center mb-4">
+
+    <h1>SAGAR MOTORS</h1>
+
+    <p class="text-muted">
+        MAHINDRA SPECIALIST
+    </p>
+
+</div>
+
+
+<div class="row g-3">
+
+    <div class="col-6 col-md-3">
+
+        <div class="card dashboard-card">
+
+            <div class="card-body">
+
+                <h6>Today's Vehicles</h6>
+
+                <h2>{{ total_today }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-6 col-md-3">
+
+        <div class="card dashboard-card">
+
+            <div class="card-body">
+
+                <h6>Pending</h6>
+
+                <h2>{{ pending }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-6 col-md-3">
+
+        <div class="card dashboard-card">
+
+            <div class="card-body">
+
+                <h6>In Progress</h6>
+
+                <h2>{{ in_progress }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-6 col-md-3">
+
+        <div class="card dashboard-card">
+
+            <div class="card-body">
+
+                <h6>Completed</h6>
+
+                <h2>{{ completed }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="card mt-4">
+
+    <div class="card-body">
+
+        <h5>Today's Collection</h5>
+
+        <h2>₹ {{ "%.2f"|format(collection) }}</h2>
+
+    </div>
+
+</div>
+
+
+<div class="d-flex justify-content-between align-items-center mt-5 mb-3">
+
+    <h4>Recent Vehicles</h4>
+
+    <a
+        href="{{ url_for('vehicles') }}"
+        class="btn btn-dark">
+        View All
+    </a>
+
+</div>
+
+
+<div class="table-responsive">
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-dark">
+
+<tr>
+
+<th>Vehicle</th>
+<th>Customer</th>
+<th>KM</th>
+<th>Work</th>
+<th>Status</th>
+<th>Date</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+{% for vehicle in recent %}
+
+<tr>
+
+<td>
+    <strong>{{ vehicle["vehicle_number"] }}</strong>
+</td>
+
+<td>
+    {{ vehicle["customer_name"] }}
+</td>
+
+<td>
+    {{ vehicle["km"] }}
+</td>
+
+<td>
+    {{ vehicle["problem"] }}
+</td>
+
+<td>
+
+{% if vehicle["status"] == "Completed" %}
+
+<span class="badge bg-success">
+Completed
+</span>
+
+{% elif vehicle["status"] == "In Progress" %}
+
+<span class="badge bg-warning text-dark">
+In Progress
+</span>
+
+{% else %}
+
+<span class="badge bg-danger">
+Pending
+</span>
+
+{% endif %}
+
+</td>
+
+<td>
+    {{ vehicle["date"] }}
+</td>
+
+</tr>
+
+{% else %}
+
+<tr>
+
+<td colspan="6" class="text-center">
+    No vehicle records yet.
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

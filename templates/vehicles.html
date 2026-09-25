@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block title %}
+Vehicles - Sagar Motors
+{% endblock %}
+
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+<h2>
+Vehicle Records
+</h2>
+
+<a
+href="{{ url_for('add_vehicle') }}"
+class="btn btn-success">
+
++ New Vehicle
+
+</a>
+
+</div>
+
+
+<form
+method="GET"
+class="mb-4">
+
+<div class="input-group">
+
+<input
+type="text"
+name="search"
+value="{{ search }}"
+class="form-control"
+placeholder="Search vehicle number, customer or mobile">
+
+<button
+class="btn btn-dark"
+type="submit">
+
+Search
+
+</button>
+
+</div>
+
+</form>
+
+
+<div class="table-responsive">
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-dark">
+
+<tr>
+
+<th>Vehicle</th>
+<th>Customer</th>
+<th>Model</th>
+<th>KM</th>
+<th>Status</th>
+<th>Date</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+{% for vehicle in vehicles %}
+
+<tr>
+
+<td>
+
+<a
+href="{{ url_for('history', vehicle_number=vehicle['vehicle_number']) }}"
+class="fw-bold">
+
+{{ vehicle["vehicle_number"] }}
+
+</a>
+
+</td>
+
+
+<td>
+{{ vehicle["customer_name"] }}
+<br>
+<small>{{ vehicle["mobile"] }}</small>
+</td>
+
+
+<td>
+{{ vehicle["vehicle_model"] }}
+</td>
+
+
+<td>
+{{ vehicle["km"] }} KM
+</td>
+
+
+<td>
+
+{% if vehicle["status"] == "Completed" %}
+
+<span class="badge bg-success">
+Completed
+</span>
+
+{% elif vehicle["status"] == "In Progress" %}
+
+<span class="badge bg-warning text-dark">
+In Progress
+</span>
+
+{% else %}
+
+<span class="badge bg-danger">
+Pending
+</span>
+
+{% endif %}
+
+</td>
+
+
+<td>
+{{ vehicle["date"] }}
+<br>
+{{ vehicle["time_in"] }}
+</td>
+
+
+<td>
+
+<a
+href="{{ url_for('edit_vehicle', id=vehicle['id']) }}"
+class="btn btn-sm btn-primary">
+
+Edit
+
+</a>
+
+
+<a
+href="{{ url_for('delete_vehicle', id=vehicle['id']) }}"
+class="btn btn-sm btn-danger"
+onclick="return confirm('Delete this record?')">
+
+Delete
+
+</a>
+
+</td>
+
+</tr>
+
+
+{% else %}
+
+<tr>
+
+<td colspan="7" class="text-center">
+
+No records found.
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+{% endblock %}

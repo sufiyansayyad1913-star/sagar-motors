@@ -1,0 +1,76 @@
+body {
+    background-color: #f5f6f8;
+    font-family: Arial, sans-serif;
+}
+
+
+.navbar-brand {
+    line-height: 1.1;
+}
+
+
+.navbar-brand small {
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+
+.dashboard-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+
+.dashboard-card h2 {
+    margin-top: 10px;
+}
+
+
+.card {
+    border-radius: 12px;
+}
+
+
+.form-control,
+.form-select {
+    border-radius: 8px;
+    padding: 10px;
+}
+
+
+.btn {
+    border-radius: 8px;
+}
+
+
+table {
+    background-color: white;
+}
+
+
+@media (max-width: 576px) {
+
+    .navbar .container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .navbar-brand {
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    .btn-lg {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+}

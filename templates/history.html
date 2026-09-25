@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}
+Vehicle History - Sagar Motors
+{% endblock %}
+
+
+{% block content %}
+
+<h2>
+🚗 {{ vehicle_number }}
+</h2>
+
+<p class="text-muted">
+Complete Service History
+</p>
+
+
+{% if records %}
+
+{% for record in records %}
+
+<div class="card mb-4">
+
+<div class="card-header bg-dark text-white">
+
+<strong>
+{{ record["date"] }}
+</strong>
+
+&nbsp;
+
+{{ record["time_in"] }}
+
+</div>
+
+
+<div class="card-body">
+
+<div class="row">
+
+
+<div class="col-md-6 mb-3">
+
+<strong>Customer:</strong>
+
+<br>
+
+{{ record["customer_name"] }}
+
+</div>
+
+
+<div class="col-md-6 mb-3">
+
+<strong>Mobile:</strong>
+
+<br>
+
+{{ record["mobile"] }}
+
+</div>
+
+
+<div class="col-md-6 mb-3">
+
+<strong>Vehicle Model:</strong>
+
+<br>
+
+{{ record["vehicle_model"] }}
+
+</div>
+
+
+<div class="col-md-6 mb-3">
+
+<strong>KM:</strong>
+
+<br>
+
+{{ record["km"] }} KM
+
+</div>
+
+
+<div class="col-12 mb-3">
+
+<strong>Problem:</strong>
+
+<br>
+
+{{ record["problem"] }}
+
+</div>
+
+
+<div class="col-12 mb-3">
+
+<strong>Work Done:</strong>
+
+<br>
+
+{{ record["work_done"] or "Not updated" }}
+
+</div>
+
+
+<div class="col-md-4 mb-3">
+
+<strong>Mechanic:</strong>
+
+<br>
+
+{{ record["mechanic"] or "Not specified" }}
+
+</div>
+
+
+<div class="col-md-4 mb-3">
+
+<strong>Status:</strong>
+
+<br>
+
+{{ record["status"] }}
+
+</div>
+
+
+<div class="col-md-4 mb-3">
+
+<strong>Amount:</strong>
+
+<br>
+
+₹ {{ record["amount"] }}
+
+</div>
+
+
+<div class="col-12">
+
+<strong>Remarks:</strong>
+
+<br>
+
+{{ record["remarks"] or "No remarks" }}
+
+</div>
+
+
+</div>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+
+{% else %}
+
+<div class="alert alert-info">
+
+No service history found for this vehicle.
+
+</div>
+
+{% endif %}
+
+
+<a
+href="{{ url_for('vehicles') }}"
+class="btn btn-secondary">
+
+← Back
+
+</a>
+
+{% endblock %}
