@@ -42,21 +42,29 @@
 
         <div>
 
-            <a
-                href="{{ url_for('dashboard') }}"
-                class="btn btn-outline-light btn-sm">
-                Dashboard
-            </a>
+    {% if session.get("logged_in") %}
 
-            <a
-                href="{{ url_for('add_vehicle') }}"
-                class="btn btn-warning btn-sm">
-                + Vehicle
-            </a>
+        <a
+            href="{{ url_for('dashboard') }}"
+            class="btn btn-outline-light btn-sm">
+            Dashboard
+        </a>
 
-        </div>
+        <a
+            href="{{ url_for('add_vehicle') }}"
+            class="btn btn-warning btn-sm">
+            + Vehicle
+        </a>
 
-    </div>
+        <a
+            href="{{ url_for('logout') }}"
+            class="btn btn-outline-danger btn-sm">
+            Logout
+        </a>
+
+    {% endif %}
+
+</div>
 
 </nav>
 

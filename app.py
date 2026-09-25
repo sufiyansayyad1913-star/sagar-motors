@@ -1,9 +1,18 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import sqlite3
 from datetime import datetime
+import os
+from functools import wraps
 
 app = Flask(__name__)
-app.secret_key = "sagar_motors_secret_key"
+
+app.secret_key = os.environ.get(
+    "SECRET_KEY",
+    "temporary-local-secret-key"
+)
+
+ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "sagar123")
 
 DATABASE = "database.db"
 
@@ -14,6 +23,34 @@ def get_db_connection():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
     return conn
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get("logged_in"):
+            return redirect(url_for("login"))
+        return f(*args, **kwargs)
+
+    return decorated_function
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+            session["logged_in"] = True
+            return redirect(url_for("dashboard"))
+
+        flash("Invalid username or password", "danger")
+
+    return render_template("login.html")
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
 
 
 # ---------------- CREATE TABLE ----------------
@@ -46,8 +83,8 @@ def init_db():
 
 
 # ---------------- DASHBOARD ----------------
-
 @app.route("/")
+@login_required
 def dashboard():
 
     conn = get_db_connection()
@@ -101,6 +138,7 @@ def dashboard():
 # ---------------- ADD VEHICLE ----------------
 
 @app.route("/add", methods=["GET", "POST"])
+@login_required
 def add_vehicle():
 
     if request.method == "POST":
@@ -169,8 +207,8 @@ def add_vehicle():
 
 
 # ---------------- ALL VEHICLES ----------------
-
 @app.route("/vehicles")
+@login_required
 def vehicles():
 
     search = request.args.get("search", "")
@@ -212,6 +250,7 @@ def vehicles():
 # ---------------- VEHICLE HISTORY ----------------
 
 @app.route("/history/<vehicle_number>")
+@login_required
 def history(vehicle_number):
 
     conn = get_db_connection()
@@ -235,6 +274,7 @@ def history(vehicle_number):
 # ---------------- EDIT ----------------
 
 @app.route("/edit/<int:id>", methods=["GET", "POST"])
+@login_required
 def edit_vehicle(id):
 
     conn = get_db_connection()
@@ -313,6 +353,7 @@ def edit_vehicle(id):
 # ---------------- DELETE ----------------
 
 @app.route("/delete/<int:id>")
+@login_required
 def delete_vehicle(id):
 
     conn = get_db_connection()
